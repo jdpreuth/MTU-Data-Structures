@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="cs2321.DefaultComparator"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
+<fullyQualifiedTypeName name="net.datastructures.Map"/>
+<fullyQualifiedTypeName name="net.datastructures.List"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.Map.Entry"/>
+<fullyQualifiedTypeName name="cs2321.HashMultiMap"/>
+<fullyQualifiedTypeName name="cs2321.ArrayList"/>
+<fullyQualifiedTypeName name="cs2321.HashMap"/>
+<fullyQualifiedTypeName name="cs2321.LookupTable"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="net.datastructures.Position"/>
+<fullyQualifiedTypeName name="cs2321.AdjListGraph.GraphEdge"/>
+<fullyQualifiedTypeName name="net.datastructures.Vertex"/>
+<fullyQualifiedTypeName name="net.datastructures.Edge"/>
+<fullyQualifiedTypeName name="net.datastructures.Entry"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+</qualifiedTypeNameHistroy>

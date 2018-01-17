@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;CircularArrayQueue.java&apos; to &apos;Labyrinth/src/cs2321&apos;&#x0D;&#x0A;- Original project: &apos;List&apos;&#x0D;&#x0A;- Destination element: &apos;Labyrinth/src/cs2321&apos;&#x0D;&#x0A;- Original element: &apos;cs2321.CircularArrayQueue.java&apos;" description="Copy compilation unit" destination="=Labyrinth/src&lt;cs2321" element1="/src&lt;cs2321{CircularArrayQueue.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1492402818929" units="1" version="1.0"/>
+</session>

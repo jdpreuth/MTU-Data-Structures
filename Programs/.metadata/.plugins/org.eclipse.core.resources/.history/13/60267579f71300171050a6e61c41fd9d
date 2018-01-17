@@ -1,0 +1,190 @@
+package cs2321;
+
+import java.util.Comparator;
+
+import net.datastructures.Entry;
+import net.datastructures.Position;
+import net.datastructures.SortedMap;
+
+public class BinarySearchTree<K, V> extends LinkedBinaryTree<Entry<K, V>> implements SortedMap<K, V> {
+
+	private class TreeEntry<K, V> implements Entry<K, V> {
+
+		K key;
+		V value;
+
+		public TreeEntry(K key, V value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		public TreeEntry() {
+			this.key = null;
+			this.value = null;
+		}
+
+		@Override
+		public K getKey() {
+			// TODO Auto-generated method stub
+			return key;
+		}
+
+		@Override
+		public V getValue() {
+			// TODO Auto-generated method stub
+			return value;
+		}
+
+		public void setValue(V value) {
+			this.value = value;
+		}
+
+	}
+
+	LinkedBinaryTree<TreeEntry<K, V>> tree = new LinkedBinaryTree<TreeEntry<K, V>>();
+	Comparator c;
+
+	/*
+	 * default constructor
+	 */
+	public BinarySearchTree() {
+		// TODO Add necessary initialization
+		c = new DefaultComparator();
+		tree.addRoot(new TreeEntry<K, V>());
+	}
+
+	/*
+	 * @param comparator - on construction, set comparator
+	 */
+	public BinarySearchTree(Comparator<K> comparator) {
+		// TODO Add necessary initialization
+		c = comparator;
+		tree.addRoot(new TreeEntry<K, V>());
+	}
+
+	private Node<TreeEntry<K, V>> castToNode(Position<TreeEntry<K, V>> p) throws IllegalArgumentException {
+		if (!(p instanceof Node)) {
+			throw new IllegalArgumentException();
+		}
+		Node<TreeEntry<K, V>> node = (Node<TreeEntry<K, V>>) p;
+		return node;
+	}
+
+	private Node<TreeEntry<K, V>> treeSearch(Position<TreeEntry<K, V>> p, K key) {
+		Node<TreeEntry<K, V>> node = castToNode(p);
+		if (!node.hasleft() && !node.hasRight()) {
+			return node;
+		}
+		if (c.compare(node.getElement().getKey(), key) < 0) {
+			return treeSearch(node.right(), key);
+		}
+		if (c.compare(node.getElement().getKey(), key) > 0) {
+			treeSearch(node.left(), key);
+		}
+		return node;
+	}
+
+	private Node<TreeEntry<K, V>> getRoot() {
+		Node<TreeEntry<K, V>> root = castToNode(tree.root());
+		return root;
+	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return tree.size();
+	}
+
+	@Override
+	public V get(K key) {
+		// TODO Auto-generated method stub
+		Node<TreeEntry<K, V>> node = treeSearch(getRoot(), key);
+		if (isInternal(node)) {
+			return null;
+		}
+		return node.getElement().getValue();
+	}
+
+	@Override
+	public V put(K key, V value) {
+		// TODO Auto-generated method stub
+		Node<TreeEntry<K, V>> node = treeSearch(getRoot(), key);
+		if (node.hasleft() && node.hasRight()) {
+			node.getElement().setValue(value);
+			return null;
+		} else {
+			node.setElement(new TreeEntry<K, V>(key, value));
+			tree.insertLeft(node, null);
+			tree.insertRight(node, null);
+			System.out.println(size());
+			return node.getElement().getValue();
+		}
+	}
+
+	@Override
+	public V remove(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<K> keySet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<V> values() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<Entry<K, V>> entrySet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<K, V> firstEntry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<K, V> lastEntry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<K, V> ceilingEntry(K key) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<K, V> floorEntry(K key) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<K, V> lowerEntry(K key) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<K, V> higherEntry(K key) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<Entry<K, V>> subMap(K fromKey, K toKey) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

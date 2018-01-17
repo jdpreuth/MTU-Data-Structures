@@ -1,0 +1,34 @@
+package cs2321;
+
+import java.util.Comparator;
+
+import net.datastructures.*;
+
+public class AVL<K,V> extends BinarySearchTree<K,V> implements  SortedMap<K,V> {
+
+	public AVL() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public AVL(Comparator<K> c) {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public int height(Position<Entry<K,V>> v) {
+		// TODO return the height of subtree v
+		return -1;
+	}
+
+	@Override
+	public V put(K key, V value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public V remove(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

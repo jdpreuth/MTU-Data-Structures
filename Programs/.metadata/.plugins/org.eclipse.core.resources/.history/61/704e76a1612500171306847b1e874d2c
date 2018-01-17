@@ -1,0 +1,24 @@
+import java.util.ArrayList;
+
+public class Test {
+	
+	public String string(){
+		return;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		double [ ] xa = {1.3, 4.8, 9.7};
+
+		ArrayList<Double> x = new ArrayList<Double>();
+
+		for (double v : xa) {
+
+		x.add(0,v);
+
+		}
+
+		System.out.println(x);
+	}
+
+}

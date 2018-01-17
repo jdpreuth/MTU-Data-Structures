@@ -1,0 +1,173 @@
+package cs2321;
+
+import java.util.Comparator;
+
+import net.datastructures.Entry;
+import net.datastructures.Position;
+import net.datastructures.SortedMap;
+
+public class AVL<K, V> extends BinarySearchTree<K, V> implements SortedMap<K, V> {
+
+	public AVL() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	public AVL(Comparator<K> c) {
+		// TODO Auto-generated constructor stub
+		super(c);
+	}
+
+	private int max(int a, int b) {
+		if (a > b) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
+	private int setHeight(Node node) {
+		if (node.isSentinel()) {
+			return 0;
+		}
+		return max(setHeight(node.left()), setHeight(node.right())) + 1;
+	}
+
+	private boolean isBalanced(Node node) {
+		int diff = Math.abs(height(node.left()) - height(node.right()));
+		if (diff <= 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void rebalance(Node node) {
+		while (node != null) {
+			int oldHeight = height(node);
+
+			setHeight(node);
+			if (!isBalanced(node)) {
+				node = reconstruct(node);
+				setHeight(node.left());
+				setHeight(node.right());
+				setHeight(node);
+			}
+
+			int newHeight = height(node);
+			if (newHeight == oldHeight) {
+				break;
+			}
+			node = node.parent();
+		}
+	}
+
+	private Node reconstruct(Node z) {
+		Node p = z.parent();
+
+		Node y;
+		if (height(z.left()) > height(z.right())) {
+			y = z.left();
+		} else {
+			y = z.right();
+		}
+
+		Node x;
+		if (height(y.left()) > height(y.right())) {
+			x = y.left();
+		} else {
+			x = y.right();
+		}
+
+		Node a = null;
+		Node b = null;
+		Node c = null;
+		Node t0 = null;
+		Node t1 = null;
+		Node t2 = null;
+		Node t3 = null;
+		if (z.right() == y && y.right() == x) {
+			a = z;
+			b = y;
+			c = x;
+			t0 = a.left();
+			t1 = b.left();
+			t2 = c.left();
+			t3 = c.right();
+		} else if (z.left() == y && y.left() == x) {
+			a = x;
+			b = y;
+			c = z;
+			t0 = a.left();
+			t1 = a.right();
+			t2 = b.right();
+			t3 = c.right();
+		} else if (z.right() == y && y.left() == x) {
+			a = z;
+			b = x;
+			c = y;
+			t0 = a.left();
+			t1 = b.left();
+			t2 = b.right();
+			t3 = c.right();
+		} else if (z.left() == y && y.right() == x) {
+			a = y;
+			b = x;
+			c = z;
+			t0 = a.left();
+			t1 = b.left();
+			t2 = b.right();
+			t3 = c.right();
+		}
+
+		b.setLeft(a);
+		b.setRight(c);
+		a.setParent(b);
+		c.setParent(b);
+		a.setLeft(t0);
+		a.setRight(t1);
+		t0.setParent(a);
+		t1.setParent(a);
+		c.setLeft(t2);
+		c.setRight(t3);
+		t2.setParent(c);
+		t3.setParent(c);
+		b.setParent(p);
+
+		if (p == null) {
+			root = b;
+		} else {
+			if (p.left() == z) {
+				p.setLeft(b);
+			} else {
+				p.setRight(b);
+			}
+		}
+		return b;
+	}
+
+	public int height(Position<Entry<K, V>> v) {
+		// TODO return the height of subtree v
+		Node node = castToNode(v);
+		return node.getHeight();
+	}
+
+	@Override
+	public V put(K key, V value) {
+		// TODO Auto-generated method stub
+		V place = super.put(key, value);
+		Node w = treeSearch(getRoot(), key);
+		if (place != null) {
+			Entry<K, V> e = w.getElement();
+			rebalance(w);
+		}
+		return null;
+	}
+
+	@Override
+	public V remove(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

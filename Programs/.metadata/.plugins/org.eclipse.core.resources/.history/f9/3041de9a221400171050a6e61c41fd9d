@@ -1,0 +1,63 @@
+package cs2321;
+
+import java.util.Comparator;
+
+import net.datastructures.Entry;
+import net.datastructures.Position;
+import net.datastructures.SortedMap;
+
+public class AVL<K, V> extends BinarySearchTree<K, V> implements SortedMap<K, V> {
+
+	public AVL() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	public AVL(Comparator<K> c) {
+		// TODO Auto-generated constructor stub
+		super(c);
+	}
+
+	private int max(int a, int b) {
+		if (a > b) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
+	private boolean isBalanced(Node node) {
+		int diff = Math.abs(height(node.left()) - height(node.right()));
+		if (diff <= 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void rebalance(Node node) {
+		while (node != null) {
+			int oldHeight = height(node);
+
+		}
+	}
+
+	public int height(Position<Entry<K, V>> v) {
+		// TODO return the height of subtree v
+		Node node = castToNode(v);
+		return node.getHeight();
+	}
+
+	@Override
+	public V put(K key, V value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public V remove(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

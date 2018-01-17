@@ -1,0 +1,393 @@
+package cs2321;
+
+import java.util.Comparator;
+
+import net.datastructures.AdaptablePriorityQueue;
+import net.datastructures.Entry;
+
+/**
+ * A Adaptable PriorityQueue based on an heap.
+ * 
+ * Course: CS2321 Section ALL Assignment: #3
+ * 
+ * @author Jon Preuth
+ */
+
+public class HeapPQ<K, V> implements AdaptablePriorityQueue<K, V> {
+
+	// Nested Class for each entry in the PQ
+	private class PQEntry<K, V> implements Entry<K, V> {
+
+		private K key; // The key of the entry
+		private V value; // The value stored in the entry
+		private int index; // The index where the entry is stored
+
+		/**
+		 * Constructor for a PQEntry
+		 * 
+		 * @param key
+		 *            the key of the entry
+		 * @param value
+		 *            the value to store in the entry
+		 * @param index
+		 *            the index where the entry is located
+		 */
+		PQEntry(K key, V value, int index) {
+			this.key = key;
+			this.value = value;
+			this.index = index;
+		}
+
+		/**
+		 * Returns the key stored in this entry.
+		 * 
+		 * @return the entry's key
+		 */
+		public K getKey() {
+			// TODO Auto-generated method stub
+			return key;
+		}
+
+		public void setKey(K key) {
+			this.key = key;
+		}
+
+		/**
+		 * Returns the value stored in this entry.
+		 * 
+		 * @return the entry's value
+		 */
+		public V getValue() {
+			// TODO Auto-generated method stub
+			return value;
+		}
+
+		/**
+		 * Returns the index of the entry
+		 * 
+		 * @return the index of the entry
+		 */
+		public int getIndex() {
+			return index;
+		}
+
+		/**
+		 * Changes the index of an entry
+		 * 
+		 * @param index
+		 *            the new index of the entry
+		 */
+		public void setIndex(int index) {
+			this.index = index;
+		}
+
+	}
+
+	private ArrayList<Entry<K, V>> queue = new ArrayList<Entry<K, V>>(); // The
+																			// list
+																			// to
+																			// implement
+																			// the
+																			// heap
+
+	private Comparator<K> c; // The comparator used to sort the heap
+
+	/**
+	 * Default Constructor for the PQ. Sets the comparator to the default
+	 * comparator
+	 */
+	public HeapPQ() {
+		// TODO: implement this method
+		c = new DefaultComparator();
+	}
+
+	/**
+	 * Constructor for a PQ with a given comparator
+	 * 
+	 * @param c
+	 *            the comparator to be used to sort the PQ
+	 */
+	public HeapPQ(Comparator<K> c) {
+		// TODO: implement this method
+		this.c = c;
+	}
+
+	/**
+	 * Returns the location of the parent of a specified entry
+	 * 
+	 * @param i
+	 *            the current entry
+	 * @return the location of the entries parent
+	 */
+	private int parent(int i) {
+		return (i - 1) / 2;
+	}
+
+	/**
+	 * Returns the location of the left child of an entry
+	 * 
+	 * @param i
+	 *            the index of an entry
+	 * @return the index of the left child
+	 */
+	private int left(int i) {
+		return 2 * i + 1;
+	}
+
+	/**
+	 * Returns the locations of the right child of an entry
+	 * 
+	 * @param i
+	 *            the index of an entry
+	 * @return the index of the right child
+	 */
+	private int right(int i) {
+		return 2 * i + 2;
+	}
+
+	/**
+	 * Check to see if an entry has a left child
+	 * 
+	 * @param i
+	 *            the index of the entry
+	 * @return true if the entry has a left child, false otherwise
+	 */
+	private boolean hasLeft(int i) {
+		return left(i) < queue.size();
+	}
+
+	/**
+	 * Checks to see if an entry has a right child
+	 * 
+	 * @param i
+	 *            the index of the entry
+	 * @return true if the entry has a right child, false otherwise
+	 */
+	private boolean hasRight(int i) {
+		return right(i) < queue.size();
+	}
+
+	/**
+	 * Swaps two entries locations
+	 * 
+	 * @param i
+	 *            the index of the first entry
+	 * @param p
+	 *            the index of the second entry
+	 */
+	private void swap(int i, int p) {
+		Entry<K, V> temp = queue.get(i);
+		queue.set(i, queue.get(p));
+		queue.set(p, temp);
+
+		((HeapPQ<K, V>.PQEntry<K, V>) queue.get(i)).setIndex(i);
+		((HeapPQ<K, V>.PQEntry<K, V>) queue.get(p)).setIndex(p);
+	}
+
+	/**
+	 * The entry should be bubbled up to its appropriate position
+	 * 
+	 * @param int
+	 *            move the entry at index j higher if necessary, to restore the
+	 *            heap property
+	 */
+	@TimeComplexity("O(log n)")
+	public void upheap(int j) {
+		/*
+		 * TCJ: The method has to check each level of the heap until it has
+		 * fixed the heap order and cuts the number of entries to check in half
+		 * each iteration. Worse case it has to go through each level which is
+		 * log n iterations
+		 */
+		while (j > 0) {
+			int p = parent(j);
+			if (c.compare(queue.get(p).getKey(), queue.get(j).getKey()) > 0) {
+				swap(j, p);
+				j = p;
+			} else {
+				break;
+			}
+
+		}
+	}
+
+	/**
+	 * The entry should be bubbled down to its appropriate position
+	 * 
+	 * @param int
+	 *            move the entry at index j lower if necessary, to restore the
+	 *            heap property
+	 */
+	@TimeComplexity("O(log n)")
+	public void downheap(int j) {
+		/*
+		 * TCJ: The method has to check each level of the heap until it has
+		 * fixed the heap order and cuts the number of entries to check in half
+		 * each iteration. Worse case it has to go through each level which is
+		 * log n iterations
+		 */
+		while (hasLeft(j)) {
+			int s = left(j);
+			if (hasRight(j)) {
+				int r = right(j);
+				if (c.compare(queue.get(s).getKey(), queue.get(r).getKey()) > 0) {
+					s = r;
+				}
+			}
+			if (c.compare(queue.get(j).getKey(), queue.get(s).getKey()) > 0) {
+				swap(s, j);
+				j = s;
+			} else {
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Returns the number of items in the priority queue.
+	 * 
+	 * @return number of items
+	 */
+	public int size() {
+		// TODO Auto-generated method stub
+		return queue.size();
+	}
+
+	/**
+	 * Tests whether the priority queue is empty.
+	 * 
+	 * @return true if the priority queue is empty, false otherwise
+	 */
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return queue.size() == 0;
+	}
+
+	/**
+	 * Inserts a key-value pair and returns the entry created.
+	 * 
+	 * @param key
+	 *            the key of the new entry
+	 * @param value
+	 *            the associated value of the new entry
+	 * @return the entry storing the new key-value pair
+	 * @throws IllegalArgumentException
+	 *             if the key is unacceptable for this queue
+	 */
+	@TimeComplexity("O(log n)")
+	public Entry<K, V> insert(K key, V value) throws IllegalArgumentException {
+		/*
+		 * TCJ: This method makes a call to upheap which is an O(log n)
+		 * operation
+		 */
+		Entry<K, V> entry = new PQEntry<K, V>(key, value, queue.size());
+		queue.addLast(entry);
+		upheap(queue.size() - 1);
+		return entry;
+	}
+
+	/**
+	 * Returns (but does not remove) an entry with minimal key.
+	 * 
+	 * @return entry having a minimal key (or null if empty)
+	 */
+	public Entry<K, V> min() {
+		// TODO Auto-generated method stub
+		if (queue.size() == 0) {
+			return null;
+		}
+		return queue.get(0);
+	}
+
+	/**
+	 * Removes and returns an entry with minimal key.
+	 * 
+	 * @return the removed entry (or null if empty)
+	 */
+	@TimeComplexity("O(log n)")
+	public Entry<K, V> removeMin() {
+		/*
+		 * TCJ: This method makes a call to downheap which is an O(log n)
+		 * operation
+		 */
+		if (queue.size() == 0) {
+			return null;
+		}
+		Entry<K, V> min = queue.get(0);
+		swap(0, queue.size() - 1);
+		queue.removeLast();
+		if (queue.size() > 0) {
+			downheap(0);
+		}
+		return min;
+	}
+
+	/**
+	 * Removes the given entry from the priority queue.
+	 *
+	 * @param entry
+	 *            an entry of this priority queue
+	 * @throws IllegalArgumentException
+	 *             if e is not a valid entry for the priority queue.
+	 */
+	public void remove(Entry<K, V> entry) throws IllegalArgumentException {
+		/*
+		 * TCJ: This method makes a call to downheap which is an O(log n)
+		 * operation
+		 */
+		PQEntry<K, V> param = (HeapPQ<K, V>.PQEntry<K, V>) entry;
+		int location = param.getIndex();
+		swap(location, queue.size() - 1);
+		queue.removeLast();
+		downheap(location);
+	}
+
+	/**
+	 * Replaces the key of an entry.
+	 *
+	 * @param entry
+	 *            an entry of this priority queue
+	 * @param key
+	 *            the new key
+	 * @throws IllegalArgumentException
+	 *             if e is not a valid entry for the priority queue.
+	 */
+	@TimeComplexity("O(log n)")
+	public void replaceKey(Entry<K, V> entry, K key) throws IllegalArgumentException {
+		/*
+		 * TCJ: This method makes a call to either downheap or upheap which are
+		 * both O(log n) operations
+		 */
+		/*
+		PQEntry<K, V> param = (HeapPQ<K, V>.PQEntry<K, V>) entry;
+		K oldKey = param.getKey();
+		int location = param.getIndex();
+		PQEntry<K, V> newEntry = new PQEntry<K, V>(key, param.getValue(), location);
+		queue.set(location, newEntry);
+		*/
+		((PQEntry)entry).setKey());
+		if (c.compare(key, oldKey) < 0) {
+			upheap(location);
+		} else {
+			downheap(location);
+		}
+	}
+
+	/**
+	 * Replaces the value of an entry.
+	 *
+	 * @param entry
+	 *            an entry of this priority queue
+	 * @param value
+	 *            the new value
+	 * @throws IllegalArgumentException
+	 *             if e is not a valid entry for the priority queue.
+	 */
+	public void replaceValue(Entry<K, V> entry, V value) throws IllegalArgumentException {
+		PQEntry<K, V> param = (HeapPQ<K, V>.PQEntry<K, V>) entry;
+		int location = param.getIndex();
+		PQEntry<K, V> newEntry = new PQEntry<K, V>(param.getKey(), value, location);
+		queue.set(location, newEntry);
+	}
+
+}
