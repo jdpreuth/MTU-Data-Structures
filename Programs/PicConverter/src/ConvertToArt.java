@@ -1,0 +1,28 @@
+
+// Takes an image file and converts it into a file that can be
+// displayed as ASCII art using the Draw program.
+import java.awt.Color;
+import java.io.File;
+
+public class ConvertToArt {
+
+	public static void main(String[] args) {
+		Picture pic = new Picture(new File("morgan.jpg"));
+
+		// Output the width and height of the image
+		System.out.printf("%d %d\n", pic.width(), pic.height());
+		for (int y = 0; y < pic.height(); y++) {
+			for (int x = 0; x < pic.width(); x++) {
+				Color c = pic.get(x, y);
+				int r = c.getRed();
+				int g = c.getGreen();
+				int b = c.getBlue();
+
+				// Convert RGB value to greyscale
+				double grey = 0.299 * r / 255.0 + 0.587 * g / 255.0 + 0.114 * b / 255.0;
+				System.out.printf("p %d %d %.1f\n", x, y, grey);
+			}
+		}
+	}
+
+}
